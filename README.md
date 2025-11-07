@@ -35,7 +35,27 @@ The following major packages are used in this project:
 - `styled-components` (CSS-in-JS styling)
 - Any additional styling packages (e.g., Sass)
 
-## Run `npm install` in the project root to install all dependencies.
+## Project Structure
+
+src/
+├─ assets/
+│ └─ images/ # Images and logos
+├─ components/ # Reusable React components
+├─ utils/ # Utility JS functions
+├─ vendor/
+│ ├─ fonts/ # Third-party font files
+│ └─ fonts.css # Font-face CSS definitions
+├─ App.css # Main styling file
+├─ App.jsx # Main app component
+├─ main.jsx # App entry point
+
+```
+
+This modular structure ensures codebase clarity, scalability, and maintainability.
+- **assets/** contains project visuals and assets.
+- **components/** contains all React UI components.
+- **utils/** contains helpers and business logic.
+- **vendor/** contains third-party resources such as fonts.
 
 # React + Vite
 
@@ -53,3 +73,4 @@ The React Compiler is not enabled on this template because of its impact on dev 
 ## Expanding the ESLint configuration
 
 If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```

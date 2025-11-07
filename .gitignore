@@ -41,6 +41,6 @@ coverage/
 *.local
 *.suo
 *.ntvs*
-*.njsproj
+*.njsproj``
 *.sln
 *.sw?

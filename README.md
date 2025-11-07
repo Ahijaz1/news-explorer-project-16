@@ -25,7 +25,17 @@ npm run dev
 
 - All Stage 1 code on `stage-1-frontend-api` branch
 
----
+## Project Dependencies
+
+The following major packages are used in this project:
+
+- `react` (UI library)
+- `react-dom` (DOM integration for React)
+- `react-router-dom` (routing)
+- `styled-components` (CSS-in-JS styling)
+- Any additional styling packages (e.g., Sass)
+
+## Run `npm install` in the project root to install all dependencies.
 
 # React + Vite
 

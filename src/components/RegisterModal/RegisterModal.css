@@ -1,0 +1,265 @@
+.register-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.register-modal {
+  background: white;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 430px;
+  padding: 36px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
+  animation: slideUp 0.3s ease-out;
+  position: relative;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.register-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
+.register-modal-title {
+  font-family: "Roboto", sans-serif;
+  font-weight: 900;
+  font-size: 24px;
+  line-height: 28px;
+  color: #1a1b22;
+  margin: 0;
+}
+
+.register-modal-close {
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #b6bcbf;
+  cursor: pointer;
+  padding: 4px;
+  transition: color 0.2s;
+}
+
+.register-modal-close:hover {
+  color: #1a1b22;
+}
+
+.register-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.register-form .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.register-form .form-label {
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 14px;
+  color: #2f71e5;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.register-form .form-input {
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  color: #1a1b22;
+  border: none;
+  border-bottom: 1px solid #d1d2d6;
+  padding: 8px 0;
+  background: transparent;
+  transition: border-color 0.2s;
+}
+
+.register-form .form-input:focus {
+  outline: none;
+  border-bottom-color: #2f71e5;
+}
+
+.register-form .form-input::placeholder {
+  color: #b6bcbf;
+}
+
+.register-form .form-input-error {
+  border-bottom-color: #ff0000;
+}
+
+.register-form .error-message {
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 14px;
+  color: #ff0000;
+  margin-top: 4px;
+}
+
+.register-submit-btn {
+  background: #2f71e5;
+  border-radius: 100px;
+  border: none;
+  color: white;
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 24px;
+  padding: 18px 0;
+  margin-top: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.register-submit-btn:hover {
+  background: #1e5fbb;
+}
+
+.register-submit-btn:disabled {
+  background: #b6bcbf;
+  cursor: not-allowed;
+}
+
+.register-footer {
+  margin-top: 32px;
+  text-align: center;
+}
+
+.register-footer p {
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  color: #b6bcbf;
+  margin: 0;
+}
+
+.sign-in-link {
+  background: none;
+  border: none;
+  color: #2f71e5;
+  text-decoration: underline;
+  cursor: pointer;
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+}
+
+.sign-in-link:hover {
+  color: #1e5fbb;
+}
+
+/* Mobile */
+@media (max-width: 767px) {
+  .register-modal {
+    width: 95%;
+    max-width: 320px;
+    padding: 24px;
+  }
+
+  .register-modal-title {
+    font-size: 20px;
+    line-height: 24px;
+  }
+
+  .register-submit-btn {
+    font-size: 16px;
+    padding: 16px 0;
+  }
+}
+
+/* Success state styles */
+.register-success {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.register-success-title {
+  font-family: "Roboto", sans-serif;
+  font-weight: 900;
+  font-size: 26px;
+  line-height: 30px;
+  color: #1a1b22;
+  margin: 0 0 32px 0;
+  border-bottom: 3px solid #1a73e8;
+  padding-bottom: 12px;
+  display: inline-block;
+}
+
+.sign-in-success-link {
+  background: none;
+  border: none;
+  color: #1a73e8;
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 24px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: color 0.2s ease;
+  padding: 8px 0;
+}
+
+.sign-in-success-link:hover {
+  color: #1557b0;
+  text-decoration: underline;
+}
+
+.sign-in-success-link:focus {
+  outline: 2px solid #1a73e8;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Mobile responsive for success state */
+@media (max-width: 767px) {
+  .register-success {
+    padding: 30px 15px;
+  }
+
+  .register-success-title {
+    font-size: 22px;
+    line-height: 26px;
+    margin-bottom: 24px;
+  }
+
+  .sign-in-success-link {
+    font-size: 16px;
+    line-height: 20px;
+  }
+}

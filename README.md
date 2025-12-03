@@ -1,76 +1,143 @@
-# Project Title
+# News Explorer Application
 
-## Stack & Setup
+**Live Demo:** [https://ahijaz1.github.io/news-explorer-project-16/](https://ahijaz1.github.io/news-explorer-project-16/)
 
-- Vite
-- React
-- React Router
-- Node.js
+This repository contains my capstone project for the TripleTen Software Engineering Bootcamp.
+The News Explorer Application is a React-based frontend designed to demonstrate mastery of modern web development techniques, project planning, API integration, UI/UX design, and professional deployment practices.
 
-## Folder Structure
+## Features
 
-- `src/components`: React components
-- `src/utils`: helper functions & API
-- `src/assets/images`: app images and logo
-- `src/vendor`: third-party assets like fonts
+- 🔍 **Article Search**: Search for news articles using the NewsAPI
+- 📱 **Responsive Design**: Works seamlessly on desktop, tablet, and mobile
+- 👤 **User Authentication**: Register and login functionality (Stage 1: simulated backend)
+- 💾 **Save Articles**: Bookmark articles for later reading
+- 🎨 **Modern UI**: Clean, professional interface with smooth interactions
+- ⚡ **Fast Performance**: Built with Vite for optimal loading speeds
 
-## Install & Start Locally
+## Tech Stack
+
+**Frontend:** React 19 (JSX)
+**Styling:** CSS (BEM methodology, responsive design)
+**Build Tool:** Vite
+**Package Manager:** npm
+**APIs:** NewsAPI, simulated Auth API
+**Deployment:** GitHub Pages
+**Router:** React Router DOM (HashRouter for GitHub Pages compatibility)
+
+### Installation
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/Ahijaz1/news-explorer-project-16.git
+cd news-explorer-project-16
+```
+
+2. Install dependencies:
 
 ```bash
 npm install
+```
+
+3. Start the development server:
+
+```bash
 npm run dev
 ```
 
-## Branching
+4. Open your browser and navigate to `http://localhost:5173`
 
-- All Stage 1 code on `stage-1-frontend-api` branch
+### Available Scripts
 
-## Project Dependencies
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run preview` - Preview production build
+- `npm run lint` - Run ESLint
+- `npm run predeploy` - Build for deployment
+- `npm run deploy` - Deploy to GitHub Pages
 
-The following major packages are used in this project:
+## Deployment
 
-- `react` (UI library)
-- `react-dom` (DOM integration for React)
-- `react-router-dom` (routing)
-- `styled-components` (CSS-in-JS styling)
-- Any additional styling packages (e.g., Sass)
+This project is automatically deployed to GitHub Pages using the `gh-pages` package.
+
+**Live URL:** [https://ahijaz1.github.io/news-explorer-project-16/](https://ahijaz1.github.io/news-explorer-project-16/)
+
+To deploy updates:
+
+```bash
+npm run deploy
+```
+
+## Backend Simulation (Stage 1)
+
+Since this is Stage 1 of the project, the backend functionality is simulated using Promise-based functions:
+
+- **Authentication**: Login/register with fake user validation
+- **Article Management**: Save/remove articles with simulated database storage
+- **Data Persistence**: Uses localStorage for demo purposes
+
+See `src/utils/auth-simple.js` and `src/utils/api.js` for implementation details.
+
+## Future Improvements (Stage 2/3)
+
+- Real backend API integration with Express.js
+- Database integration with MongoDB
+- Enhanced user profile management
+- Advanced search filters and sorting
+- Social sharing features
+- Article recommendations
+
+## Contributing
+
+This project was developed as part of the TripleTen Software Engineering Bootcamp. While it's primarily for educational purposes, suggestions and feedback are welcome!
 
 ## Project Structure
 
-src/
-├─ assets/
-│ └─ images/ # Images and logos
-├─ components/ # Reusable React components
-├─ utils/ # Utility JS functions
-├─ vendor/
-│ ├─ fonts/ # Third-party font files
-│ └─ fonts.css # Font-face CSS definitions
-├─ App.css # Main styling file
-├─ App.jsx # Main app component
-├─ main.jsx # App entry point
+```
+news-explorer-project-16/
+├── public/                 # Static assets
+├── src/
+│   ├── components/        # React components
+│   │   ├── App/          # Main application component
+│   │   ├── Header/       # Navigation and auth
+│   │   ├── Main/         # Homepage hero section
+│   │   ├── SearchForm/   # Article search functionality
+│   │   ├── SearchResults/# Search results display
+│   │   ├── NewsCard/     # Individual article cards
+│   │   ├── SavedArticles/# Saved articles page
+│   │   ├── LoginModal/   # Authentication modal
+│   │   ├── RegisterModal/# Registration modal
+│   │   ├── About/        # About section
+│   │   └── Footer/       # Site footer
+│   ├── utils/            # Helper functions and APIs
+│   │   ├── newsAPI.js   # NewsAPI integration
+│   │   ├── auth-simple.js # Authentication simulation
+│   │   ├── api.js       # Article management simulation
+│   │   └── index.js     # Utility functions
+│   └── assets/          # Images and static files
+├── dist/                 # Production build
+├── vite.config.js       # Vite configuration
+└── package.json         # Dependencies and scripts
+```
+
+## Development Setup
+
+### Prerequisites
+
+- Node.js (v16 or higher)
+- npm or yarn package manager
+- NewsAPI key (for article search functionality)
+
+### Installation
+
+## Contributing
+
+This project was developed as part of the TripleTen Software Engineering Bootcamp. While it's primarily for educational purposes, suggestions and feedback are welcome!
+
+---
+
+**Built with ❤️ by Amin Hijaz**
 
 ```
 
-This modular structure ensures codebase clarity, scalability, and maintainability.
-- **assets/** contains project visuals and assets.
-- **components/** contains all React UI components.
-- **utils/** contains helpers and business logic.
-- **vendor/** contains third-party resources such as fonts.
-
-# React + Vite
-
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
 ```

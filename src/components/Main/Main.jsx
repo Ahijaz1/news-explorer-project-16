@@ -5,10 +5,10 @@ import "./Main.css";
 export default function Main({ onSearch }) {
   return (
     <main className="main">
-      <div className="hero-section">
-        <div className="hero-content">
-          <h1 className="hero-title">What's going on in the world?</h1>
-          <p className="hero-subtitle">
+      <div className="main__hero-section">
+        <div className="main__hero-content">
+          <h1 className="main__hero-title">What's going on in the world?</h1>
+          <p className="main__hero-subtitle">
             Find the latest news on any topic and save them in your personal
             account.
           </p>

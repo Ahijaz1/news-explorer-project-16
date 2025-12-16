@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Navigation from "../Navigation/Navigation";
 import LoginModal from "../LoginModal/LoginModal";
@@ -16,7 +16,18 @@ export default function Header({
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      // Change header background after scrolling 100px
+      setIsScrolled(window.scrollY > 100);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const handleSignInClick = (e) => {
     e.preventDefault();
@@ -30,23 +41,13 @@ export default function Header({
   };
 
   const handleLogin = async (email, password) => {
-    try {
-      await onLogin(email, password);
-      setIsLoginModalOpen(false);
-    } catch (error) {
-      // Error will be handled by the modal
-      throw error;
-    }
+    await onLogin(email, password);
+    setIsLoginModalOpen(false);
   };
 
   const handleRegister = async (email, password, name) => {
-    try {
-      await onRegister(email, password, name);
-      setIsRegisterModalOpen(false);
-    } catch (error) {
-      // Error will be handled by the modal
-      throw error;
-    }
+    await onRegister(email, password, name);
+    setIsRegisterModalOpen(false);
   };
 
   const handleSignUp = () => {
@@ -64,7 +65,7 @@ export default function Header({
       {/* Mobile menu overlay */}
       {isMobileMenuOpen && (
         <div
-          className="header-menu-overlay"
+          className="header__menu-overlay"
           onClick={() => setIsMobileMenuOpen(false)}
         />
       )}
@@ -73,23 +74,23 @@ export default function Header({
         className={
           location.pathname === "/saved-articles"
             ? "header header--light"
-            : isLoggedIn
-              ? "header"
-              : "header-dark"
+            : isScrolled || isLoggedIn
+              ? "header header--scrolled"
+              : "header header--dark"
         }
       >
-        <div className="header-container">
-          <Link to="/" className="header-logo">
+        <div className="header__container">
+          <Link to="/" className="header__logo">
             NewsExplorer
           </Link>
 
           {/* Yummy hamburger menu button for mobile */}
           <button
-            className={`header-menu-btn ${isMobileMenuOpen ? "header-menu-btn--hidden" : ""}`}
+            className={`header__menu-btn ${isMobileMenuOpen ? "header__menu-btn--hidden" : ""}`}
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-label="Toggle menu"
           >
-            <img src={menuIcon} alt="Menu" className="header-menu-icon" />
+            <img src={menuIcon} alt="Menu" className="header__menu-icon" />
           </button>
 
           <Navigation

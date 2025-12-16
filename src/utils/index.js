@@ -76,7 +76,7 @@ export const formatDate = (dateString) => {
     };
 
     return date.toLocaleDateString("en-US", options);
-  } catch (error) {
+  } catch {
     return "Invalid date";
   }
 };
@@ -310,7 +310,9 @@ export const mockGetSavedArticles = async () => {
   if (storedArticles) {
     try {
       mockSavedArticles = JSON.parse(storedArticles);
-    } catch (error) {}
+    } catch (error) {
+      console.error("Failed to parse saved articles from localStorage:", error);
+    }
   }
 
   const userSavedArticles = mockSavedArticles.filter(

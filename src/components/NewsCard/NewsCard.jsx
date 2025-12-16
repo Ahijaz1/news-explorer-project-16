@@ -4,6 +4,7 @@ import trashIcon from "../../assets/images/trash.png";
 import bookmarkIcon from "../../assets/images/unsavedbk.png"; // Unsaved bookmark
 import bookmarkSavedIcon from "../../assets/images/bluebk.png"; // Saved bookmark
 import bookmarkHoverIcon from "../../assets/images/savedbk.png"; // Hover state
+import placeholderImage from "../../assets/images/not-found_v1.png"; // Placeholder image
 
 // BookmarkIcon Component - Using image instead of SVG
 const BookmarkIcon = ({ saved = false, isHovered = false }) => (
@@ -38,6 +39,18 @@ export default function NewsCard({
 }) {
   const [isIconHovered, setIsIconHovered] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [imageError, setImageError] = useState(false);
+
+  const handleImageError = () => {
+    setImageError(true);
+  };
+
+  const getImageSrc = () => {
+    if (!imageUrl || imageUrl.trim() === "" || imageError) {
+      return placeholderImage;
+    }
+    return imageUrl;
+  };
 
   const handleSaveClick = async (e) => {
     e.preventDefault();
@@ -67,13 +80,20 @@ export default function NewsCard({
         );
       }
     } catch (error) {
+      console.error("Error saving/removing article:", error);
     } finally {
       setIsSaving(false);
     }
   };
 
+  const handleCardClick = () => {
+    if (url) {
+      window.open(url, "_blank", "noopener,noreferrer");
+    }
+  };
+
   return (
-    <article className="news-card">
+    <article className="news-card" onClick={handleCardClick}>
       {/* Category tag for saved articles page */}
       {isSaved && !onSave && category && (
         <div className="news-card__category-tag">{category}</div>
@@ -118,19 +138,12 @@ export default function NewsCard({
       )}
 
       <div className="news-card__image-container">
-        {imageUrl ? (
-          <img
-            src={imageUrl}
-            alt={title || "Article"}
-            className="news-card__image"
-          />
-        ) : (
-          <div className="news-card__image-placeholder">
-            <span className="news-card__placeholder-text">
-              Image placeholder
-            </span>
-          </div>
-        )}
+        <img
+          src={getImageSrc()}
+          alt={title || "Article"}
+          className="news-card__image"
+          onError={handleImageError}
+        />
       </div>
 
       <div className="news-card__content">

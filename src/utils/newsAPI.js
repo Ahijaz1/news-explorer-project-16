@@ -1,6 +1,7 @@
 const API_KEY = "8dbe7dcc29fa498caea541c4706e07c4";
 
 // Handle environment-based URL
+/* eslint-disable no-undef */
 const newsApiBaseUrl =
   process.env.NODE_ENV === "production"
     ? "https://nomoreparties.co/news/v2/everything"
@@ -10,6 +11,7 @@ const topHeadlinesUrl =
   process.env.NODE_ENV === "production"
     ? "https://nomoreparties.co/news/v2/top-headlines"
     : "https://newsapi.org/v2/top-headlines";
+/* eslint-enable no-undef */
 
 // Utility function to get date 7 days ago
 const getDateSevenDaysAgo = () => {
@@ -32,74 +34,66 @@ export const newsAPI = {
       throw new Error("Please enter a keyword");
     }
 
-    try {
-      const params = new URLSearchParams({
-        q: query.trim(),
-        apiKey: API_KEY,
-        from: getDateSevenDaysAgo(),
-        to: getCurrentDate(),
-        pageSize: 100, // Maximum allowed in free version
-        language: "en",
-        sortBy: "relevancy",
-      });
+    const params = new URLSearchParams({
+      q: query.trim(),
+      apiKey: API_KEY,
+      from: getDateSevenDaysAgo(),
+      to: getCurrentDate(),
+      pageSize: 100, // Maximum allowed in free version
+      language: "en",
+      sortBy: "relevancy",
+    });
 
-      const response = await fetch(`${newsApiBaseUrl}?${params}`);
+    const response = await fetch(`${newsApiBaseUrl}?${params}`);
 
-      if (!response.ok) {
-        if (response.status === 429) {
-          throw new Error("Too many requests. Please try again later.");
-        } else if (response.status === 401) {
-          throw new Error("Invalid API key. Please check your credentials.");
-        } else if (response.status === 400) {
-          throw new Error("Invalid request parameters.");
-        } else {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
+    if (!response.ok) {
+      if (response.status === 429) {
+        throw new Error("Too many requests. Please try again later.");
+      } else if (response.status === 401) {
+        throw new Error("Invalid API key. Please check your credentials.");
+      } else if (response.status === 400) {
+        throw new Error("Invalid request parameters.");
+      } else {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
-
-      const data = await response.json();
-
-      if (data.status === "error") {
-        throw new Error(data.message || "API returned an error");
-      }
-
-      return data;
-    } catch (error) {
-      throw error;
     }
+
+    const data = await response.json();
+
+    if (data.status === "error") {
+      throw new Error(data.message || "API returned an error");
+    }
+
+    return data;
   },
 
   // Get top headlines
   getTopHeadlines: async () => {
-    try {
-      const params = new URLSearchParams({
-        apiKey: API_KEY,
-        country: "us",
-        pageSize: 20,
-      });
+    const params = new URLSearchParams({
+      apiKey: API_KEY,
+      country: "us",
+      pageSize: 20,
+    });
 
-      const response = await fetch(`${topHeadlinesUrl}?${params}`);
+    const response = await fetch(`${topHeadlinesUrl}?${params}`);
 
-      if (!response.ok) {
-        if (response.status === 429) {
-          throw new Error("Too many requests. Please try again later.");
-        } else if (response.status === 401) {
-          throw new Error("Invalid API key. Please check your credentials.");
-        } else {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
+    if (!response.ok) {
+      if (response.status === 429) {
+        throw new Error("Too many requests. Please try again later.");
+      } else if (response.status === 401) {
+        throw new Error("Invalid API key. Please check your credentials.");
+      } else {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
-
-      const data = await response.json();
-
-      if (data.status === "error") {
-        throw new Error(data.message || "API returned an error");
-      }
-
-      return data;
-    } catch (error) {
-      throw error;
     }
+
+    const data = await response.json();
+
+    if (data.status === "error") {
+      throw new Error(data.message || "API returned an error");
+    }
+
+    return data;
   },
 };
 

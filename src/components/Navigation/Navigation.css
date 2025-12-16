@@ -7,7 +7,14 @@
 .header-nav-link {
   text-decoration: none;
   color: inherit;
-  font-family: Roboto;
+  font-family:
+    "Roboto",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    "Helvetica Neue",
+    Arial,
+    sans-serif;
   font-weight: 500;
   font-size: 18px;
   line-height: 24px;
@@ -58,7 +65,14 @@
   border-radius: 100px;
   border-width: 1px;
   white-space: nowrap;
-  font-family: Roboto;
+  font-family:
+    "Roboto",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    "Helvetica Neue",
+    Arial,
+    sans-serif;
   font-weight: 500;
   font-size: 18px;
   line-height: 24px;
@@ -106,7 +120,6 @@
   }
 
   .header-sign-in-btn {
-    padding: 12px 24px;
     font-size: 16px;
   }
 }
@@ -118,17 +131,36 @@
     position: fixed;
     top: 0;
     right: -100%;
-    width: 320px;
-    height: 230px;
+    width: 100%;
+    height: 100vh;
     background: #1a1b22;
     flex-direction: column;
     justify-content: flex-start;
     align-items: stretch;
-    padding: 56px 16px 24px;
+    padding: 72px 16px 24px;
     gap: 0;
     transition: right 0.3s ease;
-    z-index: 1000;
+    z-index: 1002;
     border-radius: 0;
+  }
+
+  .header-nav::before {
+    content: "NewsExplorer";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    font-family: "Roboto Slab", serif;
+    font-weight: 700;
+    font-size: 16px;
+    color: #fff;
+    background: #1a1b22;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    z-index: 1003;
   }
 
   .header-nav--open {
@@ -145,7 +177,7 @@
     border: none;
     cursor: pointer;
     padding: 8px;
-    z-index: 1001;
+    z-index: 1004;
   }
 
   .header-nav-close-icon {
@@ -172,7 +204,8 @@
   }
 
   .header-sign-in-btn {
-    width: 288px;
+    width: 100%;
+    max-width: 288px;
     height: 56px;
     padding: 0;
     font-size: 18px;
@@ -186,7 +219,8 @@
   }
 
   .header-profile-btn {
-    width: 288px;
+    width: 100%;
+    max-width: 288px;
     height: 56px;
     font-size: 18px;
     text-align: left;

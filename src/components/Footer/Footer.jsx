@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import "./Footer.css";
 import githubIcon from "../../assets/images/github.png";
 import linkedinIcon from "../../assets/images/linkedin.png";
@@ -11,9 +12,9 @@ export default function Footer() {
           © 2025 Amin Hijaz, Powered by News API
         </p>
         <div className="footer__links">
-          <a href="/" className="footer__link">
+          <Link to="/" className="footer__link">
             Home
-          </a>
+          </Link>
           <a
             href="https://tripleten.com"
             className="footer__link"

@@ -1,8 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import NewsCard from "../NewsCard/NewsCard";
 import "./SearchResults.css";
 import { newsAPI } from "../../utils/newsAPI";
-import { formatDate } from "../../utils/index";
 import Preloader from "../Preloader/Preloader";
 import notFoundIcon from "../../assets/images/not-found_v1.png";
 
@@ -13,7 +12,6 @@ function SearchResults({
   onRemoveArticle,
   savedArticles = [],
   onSignInClick,
-  onSearchResults,
 }) {
   const [articles, setArticles] = useState([]);
   const [visibleCount, setVisibleCount] = useState(3);
@@ -34,7 +32,7 @@ function SearchResults({
     });
   };
 
-  const normalizeArticle = (article, index) => {
+  const normalizeArticle = useCallback((article, index, searchKeyword) => {
     const normalized = {
       id: article.id || index + 1,
       title: article.title || "No title available",
@@ -46,9 +44,10 @@ function SearchResults({
       date: article.date || formatDate(article.publishedAt),
       imageUrl: article.imageUrl || article.urlToImage,
       url: article.url,
+      keyword: searchKeyword,
     };
     return normalized;
-  };
+  }, []);
 
   const handleApiError = (error) => {
     if (error.message && error.message.includes("429")) {
@@ -64,6 +63,33 @@ function SearchResults({
     }
   };
 
+  const handleSearch = useCallback(
+    async (query) => {
+      setIsLoading(true);
+      setError(null);
+      setVisibleCount(3);
+      setHasSearched(true);
+
+      try {
+        const response = await newsAPI.searchArticles(query);
+        if (response.articles && response.articles.length > 0) {
+          const normalizedArticles = response.articles.map((article, index) =>
+            normalizeArticle(article, index, query)
+          );
+          setArticles(normalizedArticles);
+        } else {
+          setArticles([]);
+        }
+      } catch (err) {
+        setError(handleApiError(err));
+        setArticles([]);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [normalizeArticle]
+  );
+
   useEffect(() => {
     if (searchQuery && searchQuery.trim()) {
       handleSearch(searchQuery);
@@ -73,70 +99,7 @@ function SearchResults({
       setError(null);
       setVisibleCount(3);
     }
-  }, [searchQuery]);
-
-  useEffect(() => {
-    if (!searchQuery) {
-      setArticles([]);
-      setHasSearched(false);
-      setError(null);
-      setVisibleCount(3);
-    }
-  }, []);
-
-  const handleSearch = async (query) => {
-    setIsLoading(true);
-    setError(null);
-    setVisibleCount(3);
-    setHasSearched(true);
-
-    try {
-      const response = await newsAPI.searchArticles(query);
-      if (response.articles && response.articles.length > 0) {
-        const normalizedArticles = response.articles.map(normalizeArticle);
-        setArticles(normalizedArticles);
-        if (onSearchResults) {
-          onSearchResults(normalizedArticles);
-        }
-      } else {
-        setArticles([]);
-        if (onSearchResults) {
-          onSearchResults([]);
-        }
-      }
-    } catch (err) {
-      setError(handleApiError(err));
-      setArticles([]);
-      if (onSearchResults) {
-        onSearchResults([]);
-      }
-    } finally {
-      setIsLoading(false);
-    }
-  };
-  const loadTopHeadlines = async () => {
-    setIsLoading(true);
-    setError(null);
-    setShowAllArticles(false);
-
-    try {
-      const response = await newsAPI.getTopHeadlines();
-      if (response.articles) {
-        const normalizedArticles = response.articles.map(normalizeArticle);
-        setArticles(normalizedArticles);
-      } else {
-        setArticles([]);
-      }
-    } catch (err) {
-      setError(handleApiError(err));
-
-      const { mockNewsData: fallbackData } = await import("../../utils");
-      const normalizedMockData = fallbackData.map(normalizeArticle);
-      setArticles(normalizedMockData.slice(0, 6));
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  }, [searchQuery, handleSearch]);
 
   const handleShowMore = () => {
     setVisibleCount((prev) => Math.min(prev + 3, articles.length));
@@ -159,85 +122,93 @@ function SearchResults({
   }
 
   return (
-    <section className="search-results">
-      <div className="search-results__container">
-        {/* Search Results Header */}
-        {articles.length > 0 && (
-          <div className="search-results__header">
-            <h2 className="search-results__title">
-              {error ? "Search Results" : `Search results for "${searchQuery}"`}
-            </h2>
-            {!error && (
-              <p className="search-results__subtitle">
-                {articles.length} {articles.length === 1 ? "result" : "results"}
-              </p>
-            )}
-          </div>
-        )}
-
-        {/* Error State */}
-        {error && (
-          <div className="search-results__error">
-            <p>{error}</p>
-          </div>
-        )}
-
-        {/* No Results State */}
-        {!error && !isLoading && articles.length === 0 && hasSearched && (
-          <div className="search-results__no-results">
-            <img
-              src={notFoundIcon}
-              alt="Nothing found"
-              className="search-results__no-results-icon"
-            />
-            <h3 className="search-results__no-results-title">Nothing found</h3>
-            <p className="search-results__no-results-text">
-              Sorry, but nothing matched your search terms.
-            </p>
-          </div>
-        )}
-
-        {/* Articles Grid */}
-        {!error && articles.length > 0 && (
-          <>
-            <div className="search-results__grid">
-              {articlesToShow.map((article, index) => (
-                <NewsCard
-                  key={article.url || index}
-                  date={article.date}
-                  title={article.title}
-                  description={article.description}
-                  source={article.source}
-                  imageUrl={article.imageUrl}
-                  url={article.url}
-                  article={article}
-                  isLoggedIn={isLoggedIn}
-                  isSaved={savedArticles.some(
-                    (saved) =>
-                      saved.link === article.url || saved._id === article.id
-                  )}
-                  onSave={onSaveArticle}
-                  onRemove={onRemoveArticle}
-                  onSignInClick={onSignInClick}
-                />
-              ))}
+    <main>
+      <section className="search-results">
+        <div className="search-results__container">
+          {/* Search Results Header */}
+          {articles.length > 0 && (
+            <div className="search-results__header">
+              <h2 className="search-results__title">
+                {error
+                  ? "Search Results"
+                  : `Search results for "${searchQuery}"`}
+              </h2>
+              {!error && (
+                <p className="search-results__subtitle">
+                  {articles.length}{" "}
+                  {articles.length === 1 ? "result" : "results"}
+                </p>
+              )}
             </div>
+          )}
 
-            {/* Show More Button */}
-            {hasMoreArticles && (
-              <div className="search-results__show-more-container">
-                <button
-                  className="search-results__show-more"
-                  onClick={handleShowMore}
-                >
-                  Show more
-                </button>
-              </div>
-            )}
-          </>
-        )}
-      </div>
-    </section>
+          {/* Error State */}
+          {error && (
+            <div className="search-results__error">
+              <p>{error}</p>
+            </div>
+          )}
+
+          {/* No Results State */}
+          {!error && !isLoading && articles.length === 0 && hasSearched && (
+            <div className="search-results__no-results">
+              <img
+                src={notFoundIcon}
+                alt="Nothing found"
+                className="search-results__no-results-icon"
+              />
+              <h3 className="search-results__no-results-title">
+                Nothing found
+              </h3>
+              <p className="search-results__no-results-text">
+                Sorry, but nothing matched your search terms.
+              </p>
+            </div>
+          )}
+
+          {/* Articles Grid */}
+          {!error && articles.length > 0 && (
+            <>
+              <ul className="search-results__grid">
+                {articlesToShow.map((article, index) => (
+                  <li key={`${article.url}-${index}`}>
+                    <NewsCard
+                      date={article.date}
+                      title={article.title}
+                      description={article.description}
+                      source={article.source}
+                      imageUrl={article.imageUrl}
+                      url={article.url}
+                      article={article}
+                      isLoggedIn={isLoggedIn}
+                      isSaved={savedArticles.some(
+                        (saved) =>
+                          saved.link === article.url || saved._id === article.id
+                      )}
+                      onSave={onSaveArticle}
+                      onRemove={onRemoveArticle}
+                      onSignInClick={onSignInClick}
+                    />
+                  </li>
+                ))}
+              </ul>
+
+              {/* Show More Button */}
+              {hasMoreArticles && (
+                <div className="search-results__show-more-container">
+                  <button
+                    className="search-results__show-more"
+                    onClick={handleShowMore}
+                  >
+                    Show more
+                  </button>
+                </div>
+              )}
+            </>
+          )}
+        </div>
+      </section>
+    </main>
   );
 }
 

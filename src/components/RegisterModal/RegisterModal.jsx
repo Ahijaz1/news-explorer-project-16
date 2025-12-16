@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import "./RegisterModal.css";
 
 export default function RegisterModal({
@@ -16,6 +16,13 @@ export default function RegisterModal({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isRegistrationSuccessful, setIsRegistrationSuccessful] =
     useState(false);
+
+  const handleClose = useCallback(() => {
+    setIsRegistrationSuccessful(false);
+    setFormData({ username: "", email: "", password: "" });
+    setErrors({});
+    onClose();
+  }, [onClose]);
 
   // Handle Escape key press
   useEffect(() => {
@@ -35,7 +42,7 @@ export default function RegisterModal({
       document.removeEventListener("keydown", handleEscapeKey);
       document.body.style.overflow = "unset";
     };
-  }, [isOpen]);
+  }, [isOpen, handleClose]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -108,13 +115,6 @@ export default function RegisterModal({
     if (e.target === e.currentTarget) {
       handleClose();
     }
-  };
-
-  const handleClose = () => {
-    setIsRegistrationSuccessful(false);
-    setFormData({ username: "", email: "", password: "" });
-    setErrors({});
-    onClose();
   };
 
   const handleSignInClick = () => {

@@ -14,7 +14,6 @@ function App() {
   const [username, setUsername] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [savedArticles, setSavedArticles] = useState([]);
-  const [searchResults, setSearchResults] = useState([]);
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
 
   // Check for existing authentication on app load
@@ -31,9 +30,11 @@ function App() {
           try {
             const savedArticlesList = await getItems();
             setSavedArticles(savedArticlesList);
-          } catch (error) {}
+          } catch (error) {
+            console.error("Failed to load saved articles:", error);
+          }
         }
-      } catch (error) {
+      } catch {
         localStorage.removeItem("authToken");
         setIsLoggedIn(false);
         setUsername("");
@@ -47,35 +48,29 @@ function App() {
   }, []);
 
   const handleLogin = async (email, password) => {
+    const response = await authorize(email, password);
+    localStorage.setItem("authToken", response.token);
+    setIsLoggedIn(true);
+    setUsername(response.user.name);
+
+    // Load saved articles for the logged-in user
     try {
-      const response = await authorize(email, password);
-      localStorage.setItem("authToken", response.token);
-      setIsLoggedIn(true);
-      setUsername(response.user.name);
-
-      // Load saved articles for the logged-in user
-      try {
-        const savedArticlesList = await getItems();
-        setSavedArticles(savedArticlesList);
-      } catch (error) {}
-
-      return response;
+      const savedArticlesList = await getItems();
+      setSavedArticles(savedArticlesList);
     } catch (error) {
-      throw error;
+      console.error("Failed to load saved articles:", error);
     }
+
+    return response;
   };
 
   const handleRegister = async (email, password, name) => {
-    try {
-      const response = await register(email, password, name);
-      localStorage.setItem("authToken", response.token);
-      setIsLoggedIn(true);
-      setUsername(response.user.name);
-      setSavedArticles([]);
-      return response;
-    } catch (error) {
-      throw error;
-    }
+    const response = await register(email, password, name);
+    localStorage.setItem("authToken", response.token);
+    setIsLoggedIn(true);
+    setUsername(response.user.name);
+    setSavedArticles([]);
+    return response;
   };
 
   const handleLogout = () => {
@@ -89,22 +84,14 @@ function App() {
     setSearchQuery(query);
   };
 
-  const handleSearchResults = (articles) => {
-    setSearchResults(articles);
-  };
-
   const handleSaveArticle = async (article) => {
     if (!isLoggedIn) {
       throw new Error("Please log in to save articles");
     }
 
-    try {
-      const savedArticle = await saveArticle(article);
-      setSavedArticles((prev) => [...prev, savedArticle]);
-      return savedArticle;
-    } catch (error) {
-      throw error;
-    }
+    const savedArticle = await saveArticle(article);
+    setSavedArticles((prev) => [...prev, savedArticle]);
+    return savedArticle;
   };
 
   const handleRemoveArticle = async (article) => {
@@ -120,7 +107,8 @@ function App() {
         prev.filter((saved) => (saved.link || saved.url) !== articleUrl)
       );
     } catch (error) {
-      throw error;
+      console.error("Failed to delete article:", error);
+      // Optionally show error to user
     }
   };
 
@@ -151,7 +139,6 @@ function App() {
                 onSaveArticle={handleSaveArticle}
                 onRemoveArticle={handleRemoveArticle}
                 savedArticles={savedArticles}
-                onSearchResults={handleSearchResults}
                 onSignInClick={() => {}}
               />
               <About />

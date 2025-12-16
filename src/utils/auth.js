@@ -12,37 +12,27 @@ import {
 // Auth API class for managing authentication
 class AuthAPI {
   constructor() {
+    /* eslint-disable no-undef */
     this.baseUrl =
       process.env.NODE_ENV === "production"
         ? "https://api.nomoreparties.co/v1/wtwr"
         : "http://localhost:3000/api";
+    /* eslint-enable no-undef */
   }
 
   // Login user
   async login(email, password) {
-    try {
-      return await mockLogin(email, password);
-    } catch (error) {
-      throw new Error(error.message);
-    }
+    return await mockLogin(email, password);
   }
 
   // Register new user
   async register(email, password, name) {
-    try {
-      return await mockRegister(email, password, name);
-    } catch (error) {
-      throw new Error(error.message);
-    }
+    return await mockRegister(email, password, name);
   }
 
   // Check if user is authenticated
   async checkToken() {
-    try {
-      return await checkAuth();
-    } catch (error) {
-      throw new Error(error.message);
-    }
+    return await checkAuth();
   }
 
   // Logout user
@@ -52,29 +42,18 @@ class AuthAPI {
 
   // Save article for user
   async saveArticle(article) {
-    try {
-      return await mockSaveArticle(article);
-    } catch (error) {
-      throw new Error(error.message);
-    }
+    return await mockSaveArticle(article);
   }
 
   // Remove saved article
   async removeArticle(articleId) {
-    try {
-      return await mockRemoveArticle(articleId);
-    } catch (error) {
-      throw new Error(error.message);
-    }
+    return await mockRemoveArticle(articleId);
   }
 
   // Get user's saved articles
+  // Get user's saved articles
   async getSavedArticles() {
-    try {
-      return await mockGetSavedArticles();
-    } catch (error) {
-      throw new Error(error.message);
-    }
+    return await mockGetSavedArticles();
   }
 
   // Check if article is saved by user
@@ -84,7 +63,7 @@ class AuthAPI {
       return response.articles.some(
         (article) => article.articleId === articleId
       );
-    } catch (error) {
+    } catch {
       return false;
     }
   }

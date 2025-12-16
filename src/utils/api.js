@@ -32,7 +32,7 @@ let savedArticles = [
 ];
 
 export function getItems() {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     setTimeout(() => {
       resolve(savedArticles);
     }, 700);
@@ -102,7 +102,7 @@ export function deleteArticle(articleOrId) {
 }
 
 export function checkIfSaved(articleUrl) {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     setTimeout(() => {
       const isSaved = savedArticles.some(
         (article) => article.link === articleUrl

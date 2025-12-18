@@ -49,7 +49,13 @@ export default function NewsCard({
     if (!imageUrl || imageUrl.trim() === "" || imageError) {
       return placeholderImage;
     }
-    return imageUrl;
+    // Check if the URL is valid
+    try {
+      new URL(imageUrl);
+      return imageUrl;
+    } catch {
+      return placeholderImage;
+    }
   };
 
   const handleSaveClick = async (e) => {

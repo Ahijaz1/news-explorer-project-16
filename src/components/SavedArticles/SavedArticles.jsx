@@ -74,22 +74,29 @@ function SavedArticles({
             </div>
           ) : (
             <ul className="saved-articles__grid">
-              {savedArticles.map((article, index) => (
-                <li key={`${article._id || article.id}-${index}`}>
-                  <NewsCard
-                    date={article.date}
-                    title={article.title}
-                    description={article.description || article.text}
-                    source={article.source}
-                    imageUrl={article.image || article.imageUrl}
-                    url={article.link || article.url}
-                    isLoggedIn={isLoggedIn}
-                    isSaved={true}
-                    onRemove={() => handleRemoveArticle(article)}
-                    category={article.keyword}
-                  />
-                </li>
-              ))}
+              {savedArticles.map((article, index) => {
+                // Ensure imageUrl is a valid string
+                const imageUrl = article.image || article.imageUrl || "";
+                const imageUrlString =
+                  typeof imageUrl === "string" ? imageUrl : "";
+
+                return (
+                  <li key={`${article._id || article.id}-${index}`}>
+                    <NewsCard
+                      date={article.date}
+                      title={article.title}
+                      description={article.description || article.text}
+                      source={article.source}
+                      imageUrl={imageUrlString}
+                      url={article.link || article.url}
+                      isLoggedIn={isLoggedIn}
+                      isSaved={true}
+                      onRemove={() => handleRemoveArticle(article)}
+                      category={article.keyword}
+                    />
+                  </li>
+                );
+              })}
             </ul>
           )}
         </div>

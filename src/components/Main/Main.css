@@ -7,7 +7,6 @@
   background-attachment: scroll;
   margin: 0;
   padding: 0;
-  min-height: 100vh;
   top: 0;
 }
 
@@ -31,7 +30,7 @@
   z-index: 2;
   padding: 80px 5%;
   box-sizing: border-box;
-  min-height: 100vh;
+  min-height: 600px;
 }
 
 .main__hero-content {
@@ -150,16 +149,18 @@
     font-size: 48px;
     line-height: 52px;
     margin-bottom: 24px;
-    width: 385px;
-    margin-right: 156px;
+    max-width: 385px;
+    width: 100%;
+    margin-right: 0;
     text-align: left;
   }
 
   .main__hero-subtitle {
     font-size: 16px;
     margin-bottom: 60px;
-    width: 452px;
-    margin-right: 156px;
+    max-width: 452px;
+    width: 100%;
+    margin-right: 0;
     text-align: left;
   }
 
@@ -168,9 +169,10 @@
   }
 
   .search-input {
-    width: 452px;
-    margin-left: 160px;
-    margin-right: 160px;
+    max-width: 452px;
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
   }
 }
 
